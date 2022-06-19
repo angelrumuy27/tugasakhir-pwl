@@ -10,7 +10,7 @@ export default new VueRouter({
     {
       path: '/',
       redirect: {
-        name: 'login'
+        name: 'secure'
       }
     },
     {
@@ -22,6 +22,11 @@ export default new VueRouter({
       path: '/secure',
       name: 'secure',
       component: () => import(/* webpackChunkName: "about" */ '../views/secure.vue')
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: () => import(/* webpackChunkName: "about" */ '../views/Register-user.vue')
     }
   ]
 })

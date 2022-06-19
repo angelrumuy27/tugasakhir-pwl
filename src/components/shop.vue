@@ -2,10 +2,18 @@
   <div class="hello">
     <div class="topnav">
         <img id="logo" src="../assets/make-up.png" alt="">
+        <table id="tableSearch">
+            <th>
+                <tr><input id="searching" type="text" placeholder="search..."/></tr>
+            </th>
+            <th>
+                <tr><img src="../assets/magnifying-glass.png" alt="search" id="searchLogo"/></tr>
+            </th>
+        </table>
         <a id="keranjang" href=""><img src="../assets/icons8-buying-64.png" alt="Chart"></a>
         <a href="#contact">Contact</a>
         <a href="/about">About</a>
-        <a class="active" href="/">Home</a>
+        <router-link to="/" class="active">Home</router-link>
     </div>
     <h3>Baju kaos</h3>
     <ul>
@@ -21,13 +29,20 @@
         <li id="fotobarang"><ul><img src="https://www.berluti.com/on/demandware.static/-/Sites-masterCatalog_Berluti/default/dw5b7aa9db/images/R16TCU57-002_slim-fit-cotton-chino-pants_pleiades_berluti_01.jpg" alt="Italian Trulli"></ul><ul>kaos oblong</ul></li>
         <li id="fotobarang"><ul><img src="https://www.berluti.com/on/demandware.static/-/Sites-masterCatalog_Berluti/default/dw5b7aa9db/images/R16TCU57-002_slim-fit-cotton-chino-pants_pleiades_berluti_01.jpg" alt="Italian Trulli"></ul><ul>kaos oblong</ul></li>
     </ul>
-    <h3>Ecosystem</h3>
+    <h3>Follow Us</h3>
+    <table>
+        <th>
+            <tr><img src="../assets/facebook.png" alt="fb" id="sosmed"/></tr>
+            <tr><img src="../assets/instagram.png" alt="ig" id="sosmed"/></tr>
+        </th>
+        <th>
+            <tr><a href="https://www.facebook.com/" target="_blank" rel="noopener" id="sosmedname">Facebook</a></tr>
+            <tr><a href="https://www.instagram.com/" target="_blank" rel="noopener" id="sosmedname">Instagram</a></tr>
+        </th>
+    </table>
     <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
+      <li></li>
+      <li></li>
     </ul>
   </div>
 </template>
@@ -82,17 +97,36 @@ body {
   font-size: 17px;
 }
 .topnav a:hover {
-  background-color: #ddd;
+  background-color: #FDAB9F;
   color: black;
 }
 .topnav a.active {
   background-color: #9E4244;
   color: white;
 }
-#keranjang{
+#searching{
+    border-radius: 5px;
+    height: 30px;
+    width: 250px;
+    padding-left: 10px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+#tableSearch{
+    display: block;
+    float: left;
+    padding-left: 170px;
+    margin-top: 10px;
+}
+#searchLogo{
+    width: 20px;
+    height: 20px;
+    padding: 0px;
+}
+#keranjang {
     width: 60px;
     padding: 0px;
-    margin-right: 50px;
+    padding-right: 40px;
+    margin-right: 10px;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -100,6 +134,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+#sosmed {
+    width: 20px;
+}
+#sosmedname{
+    color: #2c3e50;
 }
 nav {
   padding: 30px;

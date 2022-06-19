@@ -11,6 +11,7 @@
           </th>
         </tr>
       </table>
+      <h5 id="register">Belum punya akun? <router-link to="/register">register</router-link></h5>
     </div>
 </template>
 
@@ -71,5 +72,9 @@ export default {
       background-color: rgb(82, 175, 159);
       padding: 5px 77px;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    #register{
+      margin-left: 135px;
+      text-align: center;
     }
 </style>

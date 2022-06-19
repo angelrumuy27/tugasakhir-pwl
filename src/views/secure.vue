@@ -1,7 +1,9 @@
 <template>
-    <div id='secure'>
-        <shop :msg='hello'></shop>
-    </div>
+  <div class="secure">
+    <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
+    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
+    <shop msg="hallo"/>
+  </div>
 </template>
 <!-- Bootstrap core JS-->
 <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script> -->
@@ -17,10 +19,4 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-    #secure {
-        background-color: #FFFFFF;
-        border: 1px solid #CCCCCC;
-        padding: 20px;
-        margin-top: 10px;
-    }
 </style>

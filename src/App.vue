@@ -8,6 +8,8 @@
 </template>
 
 <script>
+// import { db } from './db'
+// const user = await db().collection('users').doc('LWqwapjSMr4ANPTNJkje').get()
 export default {
   name: 'App',
   data () {
@@ -34,7 +36,6 @@ export default {
   }
 }
 </script>
-
 <style>
     body {
         background-color: #F0F0F0;
