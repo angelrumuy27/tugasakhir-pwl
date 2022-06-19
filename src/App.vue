@@ -8,15 +8,26 @@
 </template>
 
 <script>
-// import { db } from './db'
-// const user = await db().collection('users').doc('LWqwapjSMr4ANPTNJkje').get()
+import { db } from './db'
+import Vue from 'vue'
+// import loginVue from './views/login.vue'
+db.collection('user')
+  .where('nama', '==', 'angel')
+  .get()
+  .then(snap => {
+    snap.forEach(doc => {
+      Vue.prototype.$tes = doc.data().nama
+    })
+    console.log(Vue.prototype.$tes)
+  })
+
 export default {
   name: 'App',
   data () {
     return {
       authenticated: false,
       mockAccount: {
-        username: 'angel',
+        username: this.$tes,
         password: '123'
       }
     }
