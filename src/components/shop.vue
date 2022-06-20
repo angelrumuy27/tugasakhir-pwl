@@ -4,10 +4,14 @@
         <img id="logo" src="../assets/make-up.png" alt="">
         <table id="tableSearch">
             <th>
-                <tr><input id="searching" type="text" placeholder="search..."/></tr>
+                <tr><input name= "search" id="searching" v-model='input.search' type="text" placeholder="search..."/></tr>
             </th>
             <th>
-                <tr><img src="../assets/magnifying-glass.png" alt="search" id="searchLogo"/></tr>
+                <button v-on:click = 'search()'>search</button>
+                <ul>
+                  <li v-for= "produk in produks" id="itemSearch" :key="produk.img">
+                  </li>
+                </ul>
             </th>
         </table>
         <a id="keranjang" href=""><img src="../assets/icons8-buying-64.png" alt="Chart"></a>
@@ -16,8 +20,7 @@
         <router-link to="/" class="active">Home</router-link>
     </div>
     <!-- <div v-for="b of produk" :key="b.id">{{b}}</div> -->
-    <h3>Bedak</h3>
-    <button v-on:click = 'readFromFirestore()'>ini</button>
+    <button v-on:click = 'readFromFirestore()'>Lihat Semua Produk</button>
     <ul>
       <li v-for= "produk in produks" id="articleCardList" :key="produk.img">
       <ul><img :key="produk.img" :src="produk.img"/></ul>
@@ -25,7 +28,6 @@
       <ul><li>Rp.</li><li><h4 v-text="produk.harga"></h4></li></ul>
       </li>
     </ul>
-    <h3>Celana</h3>
     <h3>Follow Us</h3>
     <table>
         <th>
@@ -50,6 +52,9 @@ export default {
   name: 'HelloW',
   data () {
     return {
+      input: {
+        search: ''
+      },
       produks: []
     }
   },
@@ -58,7 +63,26 @@ export default {
       this.produks = []
       db
         .collection('produk')
-        .where('kategori', '==', 'bedak')
+        .get()
+        .then((querySnapShot) => {
+          querySnapShot.forEach((doc) => {
+            this.produks.push({
+              id: doc.id,
+              nama_produk: doc.data().nama_produk,
+              kategori: doc.data().kategori,
+              harga: doc.data().harga,
+              img: doc.data().img,
+              stok: doc.data().stok
+            })
+          })
+        })
+      console.log(this.produks)
+    },
+    async search () {
+      this.produks = []
+      db
+        .collection('produk')
+        .where('nama_produk', '==', this.input.search)
         .get()
         .then((querySnapShot) => {
           querySnapShot.forEach((doc) => {
