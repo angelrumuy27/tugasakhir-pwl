@@ -7,20 +7,20 @@
                 <tr><input name= "search" id="searching" v-model='input.search' type="text" placeholder="search..."/></tr>
             </th>
             <th>
-                <button v-on:click = 'search()'>search</button>
+                <button id="searchbtn" v-on:click = 'search()'>search</button>
                 <ul>
                   <li v-for= "produk in produks" id="itemSearch" :key="produk.img">
                   </li>
                 </ul>
             </th>
         </table>
-        <a id="keranjang" href=""><img src="../assets/icons8-buying-64.png" alt="Chart"></a>
+        <router-link to="/chart"><img src="../assets/icons8-buying-64.png" alt="Chart"></router-link>
         <a href="#contact">Contact</a>
         <a href="/about">About</a>
         <router-link to="/" class="active">Home</router-link>
     </div>
     <!-- <div v-for="b of produk" :key="b.id">{{b}}</div> -->
-    <button v-on:click = 'readFromFirestore()'>Lihat Semua Produk</button>
+    <button id="allproduk" v-on:click = 'readFromFirestore()'>Lihat Semua Produk</button>
     <ul>
       <li v-for= "produk in produks" id="articleCardList" :key="produk.img">
       <ul><img :key="produk.img" :src="produk.img"/></ul>
@@ -108,6 +108,15 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+#searchbtn{
+  padding: 5px 5px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+#allproduk{
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 #fotobarang img {
     width: 200px;
 }

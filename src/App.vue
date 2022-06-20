@@ -49,7 +49,7 @@ export default {
 </script>
 <style>
     body {
-        background-color: #F0F0F0;
+        background-color: rgb(197, 105, 105);
     }
     h1 {
         padding: 0;

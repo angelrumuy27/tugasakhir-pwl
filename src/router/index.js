@@ -27,6 +27,11 @@ export default new VueRouter({
       path: '/register',
       name: 'register',
       component: () => import(/* webpackChunkName: "about" */ '../views/Register-user.vue')
+    },
+    {
+      path: '/chart',
+      name: 'chart',
+      component: () => import(/* webpackChunkName: "about" */ '../views/shooppingChart.vue')
     }
   ]
 })
