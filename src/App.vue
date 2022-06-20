@@ -27,7 +27,7 @@ export default {
     return {
       authenticated: false,
       mockAccount: {
-        username: this.$tes,
+        username: 'angel',
         password: '123'
       }
     }

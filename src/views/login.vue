@@ -16,6 +16,8 @@
 </template>
 
 <script>
+// import { db } from '../db'
+// import Vue from 'vue'
 export default {
   name: 'LoginUser',
   data () {
@@ -29,6 +31,7 @@ export default {
   methods: {
     login () {
       if (this.input.username !== '' && this.input.password !== '') {
+        this.$emit('coba', this.input.username)
         if (this.input.username === this.$parent.mockAccount.username && this.input.password === this.$parent.mockAccount.password) {
           this.$emit('authenticated', true)
           this.$router.replace({ name: 'secure' })

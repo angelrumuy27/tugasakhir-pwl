@@ -15,20 +15,17 @@
         <a href="/about">About</a>
         <router-link to="/" class="active">Home</router-link>
     </div>
-    <h3>Baju kaos</h3>
+    <!-- <div v-for="b of produk" :key="b.id">{{b}}</div> -->
+    <h3>Bedak</h3>
+    <button v-on:click = 'readFromFirestore()'>ini</button>
     <ul>
-        <li id="fotobarang"><ul><img src="https://cache.mrporter.com/variants/images/3633577411310822/in/w2000_q60.jpg" alt="Italian Trulli"></ul><ul>kaos oblong</ul></li>
-        <li id="fotobarang"><ul><img src="https://cache.mrporter.com/variants/images/3633577411310822/in/w2000_q60.jpg" alt="Italian Trulli"></ul><ul>kaos oblong</ul></li>
-        <li id="fotobarang"><ul><img src="https://cache.mrporter.com/variants/images/3633577411310822/in/w2000_q60.jpg" alt="Italian Trulli"></ul><ul>kaos oblong</ul></li>
-        <li id="fotobarang"><ul><img src="https://cache.mrporter.com/variants/images/3633577411310822/in/w2000_q60.jpg" alt="Italian Trulli"></ul><ul>kaos oblong</ul></li>
+      <li v-for= "produk in produks" id="articleCardList" :key="produk.img">
+      <ul><img :key="produk.img" :src="produk.img"/></ul>
+      <ul><h3 v-text="produk.nama_produk"></h3></ul>
+      <ul><li>Rp.</li><li><h4 v-text="produk.harga"></h4></li></ul>
+      </li>
     </ul>
     <h3>Celana</h3>
-    <ul>
-        <li id="fotobarang"><ul><img src="https://www.berluti.com/on/demandware.static/-/Sites-masterCatalog_Berluti/default/dw5b7aa9db/images/R16TCU57-002_slim-fit-cotton-chino-pants_pleiades_berluti_01.jpg" alt="Italian Trulli"></ul><ul>kaos oblong</ul></li>
-        <li id="fotobarang"><ul><img src="https://www.berluti.com/on/demandware.static/-/Sites-masterCatalog_Berluti/default/dw5b7aa9db/images/R16TCU57-002_slim-fit-cotton-chino-pants_pleiades_berluti_01.jpg" alt="Italian Trulli"></ul><ul>kaos oblong</ul></li>
-        <li id="fotobarang"><ul><img src="https://www.berluti.com/on/demandware.static/-/Sites-masterCatalog_Berluti/default/dw5b7aa9db/images/R16TCU57-002_slim-fit-cotton-chino-pants_pleiades_berluti_01.jpg" alt="Italian Trulli"></ul><ul>kaos oblong</ul></li>
-        <li id="fotobarang"><ul><img src="https://www.berluti.com/on/demandware.static/-/Sites-masterCatalog_Berluti/default/dw5b7aa9db/images/R16TCU57-002_slim-fit-cotton-chino-pants_pleiades_berluti_01.jpg" alt="Italian Trulli"></ul><ul>kaos oblong</ul></li>
-    </ul>
     <h3>Follow Us</h3>
     <table>
         <th>
@@ -48,10 +45,39 @@
 </template>
 
 <script>
+import { db } from '../db'
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
+  name: 'HelloW',
+  data () {
+    return {
+      produks: []
+    }
+  },
+  methods: {
+    async readFromFirestore () {
+      this.produks = []
+      db
+        .collection('produk')
+        .where('kategori', '==', 'bedak')
+        .get()
+        .then((querySnapShot) => {
+          querySnapShot.forEach((doc) => {
+            this.produks.push({
+              id: doc.id,
+              nama_produk: doc.data().nama_produk,
+              kategori: doc.data().kategori,
+              harga: doc.data().harga,
+              img: doc.data().img,
+              stok: doc.data().stok
+            })
+          })
+        })
+      console.log(this.produks)
+    },
+    onload () {
+      console.log('haii')
+      this.readFromFirestore()
+    }
   }
 }
 </script>
