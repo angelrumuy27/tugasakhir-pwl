@@ -16,7 +16,7 @@ export default new VueRouter({
     {
       path: '/login',
       name: 'login',
-      component: () => import(/* webpackChunkName: "about" */ '../views/login.vue')
+      component: () => import(/* webpackChunkName: "about" */ '../App.vue')
     },
     {
       path: '/secure',

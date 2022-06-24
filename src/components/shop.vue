@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <v-app>
     <div class="topnav">
         <img id="logo" src="../assets/make-up.png" alt="">
         <table id="tableSearch">
@@ -7,7 +7,7 @@
                 <tr><input name= "search" id="searching" v-model='input.search' type="text" placeholder="search..."/></tr>
             </th>
             <th>
-                <button id="searchbtn" v-on:click = 'search()'>search</button>
+                <v-btn id="searchbtn" v-on:click = 'search()'>search</v-btn>
                 <ul>
                   <li v-for= "produk in produks" id="itemSearch" :key="produk.img">
                   </li>
@@ -24,15 +24,17 @@
     <ul>
       <li v-for= "produk in produks" id="articleCardList" :key="produk.img">
       <ul><img :key="produk.img" :src="produk.img"/></ul>
-      <ul><h3 v-text="produk.nama_produk"></h3></ul>
-      <ul><li>Rp.</li><li><h4 v-text="produk.harga"></h4></li></ul>
+      <ul> <h5 v-text= "produk.nama_produk"></h5></ul>
+      <ul><li>Rp.</li><li><h5 v-text="produk.harga"></h5></li></ul>
+      <ul><li><input type="number" id="qty" v-model="input.qty"></li></ul>
+      <ul><v-btn id="addto" v-on:click="addtocart(produk.id)">+Cart</v-btn></ul>
       </li>
     </ul>
     <h3>Follow Us</h3>
     <table>
         <th>
-            <tr><img src="../assets/facebook.png" alt="fb" id="sosmed"/></tr>
-            <tr><img src="../assets/instagram.png" alt="ig" id="sosmed"/></tr>
+            <tr><v-img src="../assets/facebook.png" alt="fb" id="sosmed"/></tr>
+            <tr><v-img src="../assets/instagram.png" alt="ig" id="sosmed"/></tr>
         </th>
         <th>
             <tr><a href="https://www.facebook.com/" target="_blank" rel="noopener" id="sosmedname">Facebook</a></tr>
@@ -43,20 +45,25 @@
       <li></li>
       <li></li>
     </ul>
-  </div>
+  </v-app>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { db } from '../db'
 export default {
   name: 'HelloW',
   data () {
     return {
       input: {
-        search: ''
+        search: '',
+        qty: 0
       },
       produks: []
     }
+  },
+  computed: {
+    ...mapGetters(['apUser'])
   },
   methods: {
     async readFromFirestore () {
@@ -98,6 +105,17 @@ export default {
         })
       console.log(this.produks)
     },
+    addtocart (identify) {
+      console.log(this.input.qty)
+      db.collection('produk')
+        .doc(identify)
+        .get()
+        .then((querySnapShot) => {
+          const documents = querySnapShot.data()
+          console.log('documents:\n', documents)
+          db.collection('keranjang').add({ harga: documents.harga, img: documents.img, qty: this.input.qty, nama_produk: documents.nama_produk, user: this.apUser })
+        })
+    },
     onload () {
       console.log('haii')
       this.readFromFirestore()
@@ -108,6 +126,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+#addto{
+  background-color: #cd7374;
+}
 #searchbtn{
   padding: 5px 5px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
@@ -137,6 +158,12 @@ a {
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
+}
+#jumlah{
+  border: 1px black;
+  background: #f1eded;
+  width: 80px;
+  margin-bottom: 10px;
 }
 .topnav {
   overflow: hidden;
@@ -169,6 +196,8 @@ body {
     width: 250px;
     padding-left: 10px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border: 5px black;
+    background: #f2f2f2;
 }
 #tableSearch{
     display: block;

@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-container>
-      <p class="display-3 font-weight-light text-center pa-4">SHOPPING CART</p>
+      <p class="display-3 font-weight-light text-center pa-4">Keranjang</p>
       <v-row>
         <v-col :cols="12" md="9" sm="12" >
           <v-simple-table>
@@ -15,23 +15,21 @@
                 <th class="text-center"></th>
               </tr>
               </thead>
+              <button id="allproduk" v-on:click = 'readBelanja()'>Lihat Semua Produk</button>
               <tbody>
-              <tr>
+              <tr v-for= "produk in produks" id="im" :key="produk.id">
                 <td>
-                  <v-list-item
-                  key="1"
-                  @click="sd"
-                >
+                  <v-list-item>
                   <v-list-item-avatar>
-                    <v-img :src="require('../assets/logo.png')"></v-img>
+                    <img :key="produk.img" :src="produk.img"/>
                   </v-list-item-avatar>
 
                   <v-list-item-content>
-                    <v-list-item-title >Item 1</v-list-item-title>
-                    <v-list-item-subtitle>Lorem Ipsum</v-list-item-subtitle>
+                    <v-list-item-title ><h5 v-text= "produk.nama_produk"></h5></v-list-item-title>
                   </v-list-item-content>
                 </v-list-item></td>
-                <td>$40.00</td>
+                <td>Rp.<h5 v-text="produk.harga"></h5><input :value="produk.harga" @load="updateTotal" type="number" id="hargaBrg" disabled hidden/>
+                </td>
                 <td>
                   <v-text-field
                     class="pt-10"
@@ -40,40 +38,10 @@
                     single-line
                     outlined
                     value="2"
-                    type="number">
+                    type="number" v-text="produk.qty">
                   </v-text-field>
                 </td>
-                <td>$80.00</td>
-                <td><a>X</a></td>
-              </tr>
-              <tr>
-                <td>
-                  <v-list-item
-                  key="1"
-                  @click="cc"
-                >
-                  <v-list-item-avatar>
-                    <v-img :src="require('../assets/logo.png')"></v-img>
-                  </v-list-item-avatar>
-
-                  <v-list-item-content>
-                    <v-list-item-title >Item 2</v-list-item-title>
-                    <v-list-item-subtitle>Lorem Ipsum</v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item></td>
-                <td>$40.00</td>
-                <td>
-                  <v-text-field
-                    class="pt-10"
-                    label="Outlined"
-                    style="width: 80px;"
-                    single-line
-                    outlined
-                    value="2"
-                    type="number"
-                  ></v-text-field>
-                </td>
-                <td>$80.00</td>
+                <td>Rp.<p type="number" v-text="produk.harga * produk.qty"></p></td>
                 <td><a>X</a></td>
               </tr>
               </tbody>
@@ -81,33 +49,137 @@
           </v-simple-table>
         </v-col>
         <v-col :cols="12" md="3" sm="12" style="background-color: lightgray">
-          <p class="headline">Order Summary</p>
-          <p class="overline">Shipping and additional costs are calculated based on values you have entered.
+          <p class="overline">Alamat Pengiriman
           </p>
           <v-simple-table>
             <template v-slot:default>
               <tbody>
               <tr>
-                <td>Order Subtotal</td>
-                <td class="text-right" style="width: 50px;">$160.00</td>
+                <td>Provinsi/Kota:</td>
               </tr>
               <tr>
-                <td>Shipping Charges</td>
-                <td class="text-right" style="width: 50px;">$10.00</td>
+                  <input style="padding-left:15px; font-size: 15px;" type="text" name="" id="" placeholder="..">
               </tr>
               <tr>
-                <td>Tax</td>
-                <td class="text-right" style="width: 50px;">$5.00</td>
+                <td>Kecamatan</td>
               </tr>
               <tr>
-                <td>Total</td>
-                <td class="text-right" style="width: 50px;"><b>$175.00</b></td>
+                  <input style="padding-left:15px; font-size: 15px;" type="text" name="" id="" placeholder="..">
+              </tr>
+              <tr>
+                <td>Nama Jalan</td>
+              </tr>
+              <tr>
+                  <input style="padding-left:15px; font-size: 15px;" type="text" name="" id="" placeholder="..">
+              </tr>
+              <tr>
+                <td>Alamat Lengkap</td>
+              </tr>
+              <tr>
+                  <input v-model="message" style="padding-left:15px; font-size: 15px;" placeholder="alamat..">
               </tr>
               </tbody>
             </template>
           </v-simple-table>
           <div class="text-center">
-            <v-btn class="primary white--text mt-5" outlined>PROCEED TO PAY</v-btn>
+              <v-row justify="center">
+    <v-dialog
+      v-model="dialog"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+    >
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          color="primary"
+          dark
+          v-bind="attrs"
+          v-on="on"
+          class="primary white--text mt-5"
+          >
+          proceed
+        </v-btn>
+      </template>
+      <v-card>
+        <v-toolbar
+          dark
+          color="primary"
+        >
+          <v-btn
+            icon
+            dark
+            @click="dialog = false"
+          >
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Checkout</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-toolbar-items>
+            <v-btn
+              dark
+              text
+              @click="dialog = false"
+            >
+              Save
+            </v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
+        <v-list
+          three-line
+          subheader
+        >
+          <v-subheader>Review</v-subheader>
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>Alamat Pengiriman</v-list-item-title>
+              <v-list-item-subtitle><p> {{ message }}</p></v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>Estimasi</v-list-item-title>
+              <v-list-item-subtitle>3-4 Hari</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+        <v-divider></v-divider>
+        <v-list
+          three-line
+          subheader
+        >
+          <v-subheader>General</v-subheader>
+          <v-list-item>
+            <v-list-item-action>
+              <v-checkbox v-model="notifications"></v-checkbox>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Bubble Wrap</v-list-item-title>
+              <v-list-item-subtitle>+5k</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-action>
+              <v-checkbox v-model="sound"></v-checkbox>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Kotak Kayu</v-list-item-title>
+              <v-list-item-subtitle>+20k</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-action>
+              <v-checkbox v-model="widgets"></v-checkbox>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Extra Protection</v-list-item-title>
+              <v-list-item-subtitle>+40k</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+        <button style="padding:30px 100px; font-size: 15px; background-color: #4169E1; margin-left: 550px; color: aliceblue;">Kirim</button>
+      </v-card>
+    </v-dialog>
+  </v-row>
           </div>
         </v-col>
       </v-row>
@@ -154,27 +226,57 @@
   </v-app>
 </template>
 <script>
+import { db } from '../db'
 export default {
-  name: 'ChartVue',
-  data: () => ({
-    rating: 4.5,
-    breadcrums: [
-      {
-        text: 'Home',
-        disabled: false,
-        href: 'breadcrumbs_home'
+  name: 'keranjangUser',
+  data () {
+    return {
+      input: {
+        username: '',
+        password: '',
+        harga: 0,
+        sale_total: this.harga * 9,
+        alamat: ''
       },
-      {
-        text: 'Clothing',
-        disabled: false,
-        href: 'breadcrumbs_clothing'
-      },
-      {
-        text: 'T-Shirts',
-        disabled: true,
-        href: 'breadcrumbs_shirts'
-      }
-    ]
-  })
+      dialog: false,
+      notifications: false,
+      sound: true,
+      widgets: false,
+      visibleScrollingLongContentDemo: false,
+      produks: []
+    }
+  },
+  methods: {
+    readBelanja () {
+      this.produks = []
+      db
+        .collection('keranjang')
+        .get()
+        .then((querySnapShot) => {
+          querySnapShot.forEach((doc) => {
+            this.produks.push({
+              id: doc.id,
+              nama_produk: doc.data().nama_produk,
+              harga: doc.data().harga,
+              img: doc.data().img,
+              user: doc.data().user,
+              qty: doc.data().qty
+            })
+          })
+        })
+      console.log(this.produks)
+      // document.getElementById('total').innerHTML = this.updateTotal()
+      // console.log(this.updateTotal())
+    },
+    updateTotal (event) {
+      // this.input.harga = event.target.value
+      // this.input.sale_total = this.input.harga * 0
+      // document.getElementById('hargaBrg').value * 0
+    },
+    setHarga (hrg) {
+      this.input.harga = hrg
+      console.log(hrg)
+    }
+  }
 }
 </script>
